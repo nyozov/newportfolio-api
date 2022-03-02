@@ -1,13 +1,13 @@
 const express = require('express');
 const serverless = require('serverless-http');
 require("dotenv").config();
-
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
+app.use(cors());
 
 const sgMail = require("@sendgrid/mail");
 
@@ -21,7 +21,8 @@ router.get('/', (req, res) => {
   })
 })
 
-router.post("/email", async (req, res) => {
+router.post("/email", cors(), async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   let { name, message } = req.body;
   const msg = {
     to: "n_yozov@hotmail.com", // Change to your recipient
