@@ -21,8 +21,8 @@ router.get('/', (req, res) => {
   })
 })
 
-router.post("/email", cors(), async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
+router.post("/email", (req, res) => {
+
   let { name, message } = req.body;
   const msg = {
     to: "n_yozov@hotmail.com", // Change to your recipient
@@ -35,18 +35,17 @@ router.post("/email", cors(), async (req, res) => {
 
   `,
   };
-  try {
+  
     sgMail
       .send(msg)
-      .then(() => {
+      .then((result) => {
+        res.json({success:true})
         console.log("Email sent");
       })
       .catch((error) => {
         console.error(error);
       });
-  } catch (error) {
-    console.log("email error:", error.message);
-  }
+  
 });
 
 
